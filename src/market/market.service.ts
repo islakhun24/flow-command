@@ -197,7 +197,6 @@ export async function getHistoricalSnapshots(
 
     for (let i = 30; i < klines.length; i++) {
         const slice = klines.slice(i - 30, i)
-        console.log(slice)
         const snapshot = buildMarketContextFromSlice(symbol, slice)
         snapshots.push(snapshot)
     }

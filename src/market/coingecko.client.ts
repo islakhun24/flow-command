@@ -30,3 +30,18 @@ export async function fetchMarketCaps(): Promise<MarketCapMap> {
 
     return map
 }
+
+const cache = new Map<string, number>()
+
+export async function getMarketCapUsd(symbol: string): Promise<number> {
+    const key = symbol.replace("USDT", "").toLowerCase()
+    if (cache.has(key)) return cache.get(key)!
+
+    const { data } = await http.get(`/coins/markets`, {
+        params: { vs_currency: "usd", symbols: key }
+    })
+
+    const mcap = data?.[0]?.market_cap ?? 0
+    cache.set(key, mcap)
+    return mcap
+}

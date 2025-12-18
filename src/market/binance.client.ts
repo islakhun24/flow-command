@@ -18,8 +18,8 @@ async function get<T>(url: string, params?: any): Promise<T> {
 
 export async function getKlines(
     symbol: string,
-    interval: "1m" | "5m",
-    limit = 100
+    interval = "4h",
+    limit = 20
 ) {
     return get<any[]>("/fapi/v1/klines", { symbol, interval, limit })
 }
@@ -36,19 +36,32 @@ export async function getOpenInterest(symbol: string) {
    LONG SHORT RATIO
 ========================= */
 
+export async function getFundingRate(symbol: string) {
+    const data = await get("/fapi/v1/fundingRate", { symbol, limit: 1 })
+    return data[0]
+}
+
 export async function getLSRetail(symbol: string) {
     return get<any[]>("/futures/data/globalLongShortAccountRatio", {
         symbol,
-        period: "5m",
-        limit: 1
+        period: "4h",
+        limit: 20
     })
 }
 
 export async function getLSTopTrader(symbol: string) {
     return get<any[]>("/futures/data/topLongShortPositionRatio", {
         symbol,
-        period: "5m",
-        limit: 1
+        period: "4h",
+        limit: 20
+    })
+}
+
+export async function getLSTopTraderAccount(symbol: string) {
+    return get<any[]>("/futures/data/topLongShortAccountRatio", {
+        symbol,
+        period: "4h",
+        limit: 20
     })
 }
 
@@ -59,7 +72,8 @@ export async function getLSTopTrader(symbol: string) {
 export async function getOrderBook(symbol: string, limit = 100) {
     return get<{ bids: string[][]; asks: string[][] }>(
         "/fapi/v1/depth",
-        { symbol, limit }
+        { symbol, period: "4h",
+            limit: limit }
     )
 }
 
@@ -72,4 +86,37 @@ export async function getAllPerpetualSymbols(): Promise<string[]> {
     return data.symbols
         .filter((s: any) => s.contractType === "PERPETUAL")
         .map((s: any) => s.symbol)
+}
+
+export async function getAllFuturesSymbols(): Promise<string[]> {
+    const data  = await get("/fapi/v1/exchangeInfo")
+
+    return data.symbols
+        .filter(
+            (s: any) =>
+                s.contractType === "PERPETUAL" &&
+                s.quoteAsset === "USDT" &&
+                s.status === "TRADING"
+        )
+        .map((s: any) => s.symbol)
+}
+
+export async function getNotionalOpenInterest(
+    symbol: string,
+    interval = "4h",
+    limit = 20
+) {
+    const data = await get(
+        "/futures/data/openInterestHist",
+        {
+            symbol: symbol,
+            period: interval,
+            limit: limit
+        }
+    )
+
+    return data.map((d: any) => ({
+        notional: Number(d.sumOpenInterestValue),
+        timestamp: d.timestamp
+    }))
 }
