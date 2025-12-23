@@ -13,7 +13,6 @@ export async function startScanner() {
         try {
             // 1️⃣ BTC FIRST
             const btcCtx = await updateBTCContext()
-            console.log(btcCtx)
             if (!btcCtx) return
 
             // 2️⃣ SCAN ALT

@@ -38,7 +38,7 @@ function assignTierByPercentile(
 }
 
 export async function buildPrePumpRankingAll() {
-    const symbols = await getAllFuturesSymbols()
+    const symbols = (await getAllFuturesSymbols())
     const results: any[] = []
 
     await runWithLimit(symbols, 3, async (symbol) => {

@@ -4,6 +4,10 @@ import { detectSweep } from "../indicators/sweep"
 import { analyzeLongShort } from "../indicators/longShort"
 import { getPrePumpAnalysis, getPrePumpRankingAll } from "../controller/analysis-coin.controller"
 import {prePumpScanController} from "../controller/prePump.controller";
+import {PairInformationController} from "../controller/pairInformation.controller";
+import {FundingRatesController} from "../controller/fundingRate.controller";
+import {OpenInterestController} from "../controller/openInterest.controller";
+import {LsRatioController} from "../controller/lsRatio.controller";
 
 export function startServer() {
     const app = express()
@@ -23,6 +27,13 @@ export function startServer() {
     app.get("/analysis/pre-pump", getPrePumpAnalysis)
     app.get("/analysis/pre-pump/rank/all2", getPrePumpRankingAll)
     app.get("/analysis/pre-pump/rank/all", prePumpScanController)
+    app.get("/analysis/pair/information/all", PairInformationController)
+
+    app.get("/pair/funding-rates",FundingRatesController)
+    app.get("/pair/open-interest",OpenInterestController)
+
+    // pair/ls-ratio?limit=100&interval=4h&symbol=BTCUSDT
+    app.get("/pair/ls-ratio", LsRatioController)
 
     app.listen(port, () => {
         console.log(`Flow-Command API running on port ${port}`)

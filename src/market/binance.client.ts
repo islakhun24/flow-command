@@ -41,27 +41,27 @@ export async function getFundingRate(symbol: string) {
     return data[0]
 }
 
-export async function getLSRetail(symbol: string) {
+export async function getLSRetail(symbol: string, limit = 1) {
     return get<any[]>("/futures/data/globalLongShortAccountRatio", {
         symbol,
         period: "4h",
-        limit: 20
+        limit: limit
     })
 }
 
-export async function getLSTopTrader(symbol: string) {
+export async function getLSTopTrader(symbol: string, limit = 1) {
     return get<any[]>("/futures/data/topLongShortPositionRatio", {
         symbol,
         period: "4h",
-        limit: 20
+        limit: limit
     })
 }
 
-export async function getLSTopTraderAccount(symbol: string) {
+export async function getLSTopTraderAccount(symbol: string,limit = 1) {
     return get<any[]>("/futures/data/topLongShortAccountRatio", {
         symbol,
         period: "4h",
-        limit: 20
+        limit: limit
     })
 }
 

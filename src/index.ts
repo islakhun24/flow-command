@@ -11,5 +11,5 @@ async function bootstrap() {
 bootstrap()
 
 import { startServer } from "./api/server"
+import {getMarketFundingRates} from "./market/market";
 startServer()
-

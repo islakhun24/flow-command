@@ -1,5 +1,0 @@
-
-stypescript:S1128"+Remove this unused import of 'detectSweep'.(œÃœA8ý¸Óæ²3J$efdac198-29ed-47b7-90c7-a52c38221129
-~typescript:S1128"0Remove this unused import of 'analyzeLongShort'.(üâ«²ýÿÿÿÿ8þ¸Óæ²3J$012dfb4c-8495-47fe-9612-fe5b8d74860e
-¸typescript:S6606
-"jPrefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.(¬ùÈÿùÿÿÿÿ8þ¸Óæ²3J$70a5bd4f-4fe6-4334-a1a3-eca927a77ea8

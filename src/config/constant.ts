@@ -7,3 +7,8 @@ export const TIMEFRAME = {
     MAIN: "1m",
     BTC_CONFIRM: "5m",
 }
+
+export type FVGConfig = {
+    minGapPercent: number // contoh: 0.15 (%)
+}
+
