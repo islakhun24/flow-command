@@ -85,7 +85,6 @@ export async function LsRatioService(symbol: string | undefined, interval: strin
     const huobiLSTopTraderPositionRatioDataRaw = mapBuySellRatioToLSHuobi(huobiLSTopTraderPositionRatioData)
     const huobiLSTopTraderAccountRatioDataRaw = mapBuySellRatioToLSHuobi(huobiLSTopTraderAccountRatioData)
 
-    console.log("huobiLSTopTraderPositionRatioDataRaw", huobiLSTopTraderPositionRatioDataRaw)
     const huobiExchange: LSPerExchange = {
         exchange: "HUOBI",
         topAccount: buildLSRawSource('TOP_ACCOUNT', huobiLSTopTraderAccountRatioDataRaw),

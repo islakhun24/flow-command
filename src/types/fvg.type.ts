@@ -1,7 +1,8 @@
-export type FVG = {
-    type: "BULLISH" | "BEARISH"
-    low: number
+export interface FVG {
     high: number
-    startIndex: number
-    endIndex: number
+    low: number
+    size: number
+    fillPercent: number
+    valid: boolean
+    score: number
 }

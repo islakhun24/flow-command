@@ -1,6 +1,8 @@
 import axios from "axios";
 import {API_CONSTANTS} from "../config/api.constant";
 import {ApiRequestParam, EndpointKey} from "../types/futuresApi.type";
+import {logAxiosError} from "../utils/axios.util";
+import {parseKlineBinance} from "../utils/binance.util";
 
 const binance = API_CONSTANTS.BINANCE
 
@@ -9,9 +11,21 @@ const httpFutures = axios.create({
     timeout: 10_000
 })
 
-async function getFuturesData<T>(url: string | undefined, params?: ApiRequestParam): Promise<T> {
-    const res = await httpFutures.get<T>(url, { params })
-    return res.data
+export async function getFuturesData<T>(
+    url: string | undefined,
+    params?: ApiRequestParam
+): Promise<T> {
+    try {
+        const res = await httpFutures.get<T>(url!, {
+            params,
+            timeout: 5000
+        })
+
+        return res.data
+    } catch (err) {
+        logAxiosError(err, url, params)
+        throw err
+    }
 }
 
 export async function getBinanceFutureTicker(params?: ApiRequestParam) {
@@ -32,6 +46,18 @@ export async function getBinanceFutureKline(params?: ApiRequestParam) {
         startTime: params?.startTime,
         endTime: params?.endTime
     })
+}
+
+export async function getBinanceFutureKlineWithMapping(params?: ApiRequestParam) {
+    const data  = await  getFuturesData<any[]>(binance.endpoints.klines, {
+        symbol: params?.symbol,
+        interval: params?.period,
+        limit: params?.limit,
+        startTime: params?.startTime,
+        endTime: params?.endTime
+    })
+
+    return data.map((k: any) => (parseKlineBinance(k)));
 }
 
 export async function getBinanceFutureOrderbook(params?: ApiRequestParam) {
@@ -85,6 +111,15 @@ export async function getBinanceFutureLiquidations(params?: ApiRequestParam) {
     })
 }
 
+export async function getBinanceFutureLiquidationsOrder(params?: ApiRequestParam) {
+    return getFuturesData<any[]>(binance.endpoints.liquidationData, {
+        symbol: params?.symbol,
+        limit: params?.limit,
+        startTime: params?.startTime,
+        endTime: params?.endTime
+    })
+}
+
 export async function getBinanceFutureLongShortGlobal(params?: ApiRequestParam) {
     return getFuturesData<any[]>(binance.endpoints.longShortGlobal, {
         symbol: params?.symbol,
@@ -103,6 +138,14 @@ export async function getBinanceFutureLongShortTopAccount(params?: ApiRequestPar
 
 export async function getBinanceFutureLongShortTopPosition(params?: ApiRequestParam) {
     return getFuturesData<any[]>(binance.endpoints.longShortTopPosition, {
+        symbol: params?.symbol,
+        period: params?.period,
+        limit: params?.limit
+    })
+}
+
+export async function getBinanceAggTrades(params?: ApiRequestParam) {
+    return getFuturesData<any[]>(binance.endpoints.trades, {
         symbol: params?.symbol,
         period: params?.period,
         limit: params?.limit

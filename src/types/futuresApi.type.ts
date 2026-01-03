@@ -16,6 +16,7 @@ export type EndpointKey =
     | "meta"
     | "trades"
     | "funding"
+    | "liquidationData"
 
 
 // api.types.ts

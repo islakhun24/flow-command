@@ -45,3 +45,40 @@ export async function getMarketCapUsd(symbol: string): Promise<number> {
     cache.set(key, mcap)
     return mcap
 }
+
+export async function getCoinDetail(symbol: string): Promise<number> {
+    const key = symbol.replace("USDT", "").toLowerCase()
+    if (cache.has(key)) return cache.get(key)!
+
+    const { data } = await http.get(`/coins/markets`, {
+        params: { vs_currency: "usd", symbols: key }
+    })
+
+    return data?.[0]
+}
+
+export async function getCoinDetail(symbol: string): Promise<number> {
+    const key = symbol.replace("USDT", "").toLowerCase()
+    if (cache.has(key)) return cache.get(key)!
+
+    const { data } = await http.get(`/coins/markets`, {
+        params: { vs_currency: "usd", symbols: key }
+    })
+
+    return data?.[0]
+}
+
+export async function getCoinList(): Promise<any> {
+    const {data} = await http.get(`/coins/list`)
+    return data
+}
+
+
+export async function getMultipleCoin(batchIds: string){
+    console.log("DDD")
+    const { data } = await axios.get("https://api.coingecko.com/api/v3/coins/markets", {
+        params: { vs_currency: "usd", ids: batchIds }
+    });
+
+    return data
+}

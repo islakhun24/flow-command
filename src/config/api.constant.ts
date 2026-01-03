@@ -36,7 +36,9 @@ export const API_CONSTANTS: Record<Exchange, ExchangeApiConfig> = {
             longShortGlobal: "/futures/data/globalLongShortAccountRatio",
             longShortTopAccount: "/futures/data/topLongShortAccountRatio",
             longShortTopPosition: "/futures/data/topLongShortPositionRatio",
-            markPrice: "/fapi/v1/premiumIndex"
+            markPrice: "/fapi/v1/premiumIndex",
+            liquidationData: "/futures/data/liquidationOrders",
+            trades: "/fapi/v1/aggTrades",
         }
     },
     HYPERLIQUID: {
